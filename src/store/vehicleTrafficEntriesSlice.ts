@@ -9,7 +9,7 @@ export interface VehicleTrafficEntriesState {
 }
 
 const initialState: VehicleTrafficEntriesState = {
-    bufferSize: 20,
+    bufferSize: 5,
     entries: []
 } as const;
 
@@ -18,21 +18,25 @@ const vehicleTrafficEntries = createSlice({
     initialState,
     reducers: {
         updateBufferSize(state, action: PayloadAction<number>) {
+            if (!Number.isInteger(action.payload)) {
+                throw new Error("Buffer size should be an interger!")
+            }
             if (action.payload < 1) {
                 throw new Error("Buffer size should be at least 1!")
             }
             return {
                 ...state,
-                entries: state.entries.slice(0, action.payload)
+                bufferSize: action.payload,
+                entries: state.entries.slice().reverse().slice(0, action.payload).reverse()
             }
         },
         pushVehicleEntry(state, action: PayloadAction<VehicleTrafficEntry>) {
             const entries = state.entries.slice();
             entries.push(action.payload);
-            entries.sort((a, b) => a.timestamp - b.timestamp);
+            entries.sort((a, b) => b.timestamp - a.timestamp);
             return {
                 ...state,
-                entries: entries.slice(0, state.bufferSize)
+                entries: entries.slice(0, state.bufferSize).reverse()
             }
         }
     }

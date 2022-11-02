@@ -1,66 +1,42 @@
-import { Key } from "react";
-import { VehicleTrafficEntry } from "../../types";
+import {FC} from "react";
+import {VehicleTrafficEntry} from "../../types";
+
 export interface VehicleTrafficTableProps {
-    entries: VehicleTrafficEntry[];
+    entries: readonly VehicleTrafficEntry[];
 }
 
-export const VehicleTrafficTable = ({ vehicleTraffic }) => {
-    return (
-        <div className={classes.wrapper}>
-            <table className={classes.table}>
-                <thead>
-                <tr>
-                    <th>Тип
-                        <div className={classes.filterTypeWrapper}>
-                            <div className={`${classes.filterType} ${(showFilterOverlay) ? "open" : ""}`}
-                                 onClick={() => {setFilterOverlay(true)}}>{renameFilterValue(filterType)}</div>
-                            <div className={`${classes.filterTypeIcon} status-icon`}/>
-                            <div className={`${classes.filterTypeList} status-list`}>
-                                {typeList.map(text => (
-                                    <div value={text} className={`${classes.filterTypeElement} ${(filterType === text) ? "active" : ""}`}
-                                         key={Math.random()} onClick={e => selectedType(e.target, text)}>{renameFilterValue(text)}
-                                    </div>
-                                    )
-                                )}
-                            </div>
-                            <div className={`${classes.filterTypeOverlay} status-overlay`}
-                                 onClick={() => {setFilterOverlay(false)}}/>
-                        </div>
-                    </th>
-                    <th>Цвет
-                        <input type="text" className={classes.filterColor} placeholder="Введите цвет"
-                               onChange={e => setFilterColor(e.target.value.trim())}/>
-                    </th>
-                    <th>
-                        <span className={classes.speedText}>Скорость</span>
-                        <input type="number" className={classes.filterSpeed} placeholder="от"
-                               onChange={e => setFilterSpeed({from: e.target.value.trim(), to: filterSpeed.to})}/>
-                        <input type="number" className={classes.filterSpeed} placeholder="до"
-                               onChange={e => setFilterSpeed({from: filterSpeed.from, to: e.target.value.trim()})}/>
-                    </th>
-                </tr>
-                </thead>
-                <tbody className={(transport.length && visibilityRow) ? classes.even : ""}>
-                    {(!transport.length) ? (
-                        <tr>
-                            <td colSpan="3" className={classes.dataNotFound}>Данные отсутствуют</td>
-                        </tr>
-                    ) : transport.map((e: { deviceId: Key | null | undefined; }) => <TableRow data={e} renameFilterValue={renameFilterValue} key={e.deviceId}/>)}
-                </tbody>
+export const VehicleTrafficTable: FC<VehicleTrafficTableProps> = ({ entries }) => (
+    <table>
+        <thead>
+            <VehicleTrafficTableHeadRow/>
+        </thead>
+        <tbody>
+            {entries.map(entry => <VehicleTrafficTableRow key={entry.deviceId} entry={entry}/>)}
+            </tbody>
             </table>
-        </div>
-    );
-};
+)
 
-// Компонент строки таблицы
-const TableRow = ({data, renameFilterValue}) => {
-    return (
-        <tr>
-            <td>{renameFilterValue(data.class)}</td>
-            <td>{data.color}</td>
-            <td>{data.speed}</td>
-        </tr>
-    );
-};
+const VehicleTrafficTableHeadRow: FC = () => (
+    <tr>
+        <td>Дата</td>
+        <td>Класс</td>
+        <td>Цвет</td>
+        <td>Номер</td>
+        <td>Скорость</td>
+    </tr>
+)
 
-export default VehicleTable;
+
+interface VehicleTrafficTableRowProps {
+    entry: VehicleTrafficEntry;
+}
+
+const VehicleTrafficTableRow: FC<VehicleTrafficTableRowProps> = ({entry}) => (
+    <tr>
+        <td>{new Date(entry.timestamp * 1000).toLocaleTimeString()}</td>
+        <td>{entry.class}</td>
+        <td>{entry.color}</td>
+        <td>{entry.plate}</td>
+        <td>{entry.speed}</td>
+    </tr>
+);
