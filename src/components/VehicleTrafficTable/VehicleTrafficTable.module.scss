@@ -1,0 +1,24 @@
+
+.wrapper  {
+  min-width: 720px;
+  box-sizing: border-box;
+  padding: 10px 0 0 0;
+    .table {
+      width: 80%;
+      border-collapse: collapse;
+      margin: 0 auto;
+      border: 0.5px solid rgb(162, 162, 162);
+      thead{
+        background-color: rgb(167, 250, 167);
+      }
+      tr {
+        text-align: center;
+        border-bottom: 0.5px solid rgb(162, 162, 162);
+        td {
+          width: 20%;
+          padding: 10px;
+          text-align: center;
+        }
+      }
+    } 
+}

@@ -1,42 +1,72 @@
 import {FC} from "react";
-import {VehicleTrafficEntry} from "../../types";
-
+import {VehicleClass, VehicleColor, VehicleTrafficEntry} from "../../types";
+import styles from './VehicleTrafficTable.module.scss';
 export interface VehicleTrafficTableProps {
     entries: readonly VehicleTrafficEntry[];
 }
 
 export const VehicleTrafficTable: FC<VehicleTrafficTableProps> = ({ entries }) => (
-    <table>
-        <thead>
-            <VehicleTrafficTableHeadRow/>
-        </thead>
-        <tbody>
-            {entries.map(entry => <VehicleTrafficTableRow key={entry.deviceId} entry={entry}/>)}
+    <div className={styles.wrapper}>
+        <table className={styles.table}>
+            <thead>
+                <VehicleTrafficTableHeadRow/>
+            </thead>
+            <tbody>
+                {entries.map(entry => <VehicleTrafficTableRow key={entry.deviceId} entry={entry}/>)}
             </tbody>
-            </table>
+        </table>
+    </div>
 )
 
 const VehicleTrafficTableHeadRow: FC = () => (
-    <tr>
-        <td>Дата</td>
-        <td>Класс</td>
-        <td>Цвет</td>
-        <td>Номер</td>
-        <td>Скорость</td>
-    </tr>
+    <tr className={styles.tr}><td>Дата</td><td>Тип</td><td>Цвет</td><td>Номер</td><td>Скорость</td></tr>
 )
 
 
 interface VehicleTrafficTableRowProps {
     entry: VehicleTrafficEntry;
 }
+const vehicleClassMap: Record<VehicleClass, string> = {
+    'car': "🚗",
+    'truck': "🚛",
+    'bus': "🚌",
+    'motorcycle': "🏍",
+} as const;
 
-const VehicleTrafficTableRow: FC<VehicleTrafficTableRowProps> = ({entry}) => (
-    <tr>
-        <td>{new Date(entry.timestamp * 1000).toLocaleTimeString()}</td>
-        <td>{entry.class}</td>
-        <td>{entry.color}</td>
-        <td>{entry.plate}</td>
-        <td>{entry.speed}</td>
-    </tr>
-);
+interface ClassComponentProps {
+    typeCar: VehicleClass;
+}
+
+const TypeCar: FC<ClassComponentProps> = ({ typeCar }) => (
+    <span>{vehicleClassMap[typeCar]}</span>
+)
+
+const vehicleColorMap: Record<VehicleColor, string> = {
+    'black': '⚫️',
+    'white': '⚪️',
+    'red': '🔴',
+    'green': '🟢',
+    'blue': '🔵',
+    'yellow': '🟡',
+    'silver': '⚪️'
+} as const;
+
+interface ColorComponentProps {
+    color: VehicleColor;
+}
+
+const Color: FC<ColorComponentProps> = ({ color }) => (
+    <span>{vehicleColorMap[color]}</span>
+)
+
+const VehicleTrafficTableRow: FC<VehicleTrafficTableRowProps> = ({entry}) => {
+    return (
+        <tr>
+            <td>{new Date(entry.timestamp * 1000).toLocaleTimeString()}</td>
+            <td><TypeCar typeCar={entry.class}/></td>
+            <td><Color color={entry.color}/></td>
+            <td>{entry.plate}</td>
+            <td>{entry.speed}</td>
+        </tr>
+    )
+};

@@ -14,7 +14,7 @@ const Main = () => {
         const entryStream = watchVehicleTraffic();
         entryStream.listen(entry => dispatch(pushVehicleEntry(entry)));
         return () => entryStream.close();
-    }, []);
+    }, [dispatch]);
 
     return (
         <>

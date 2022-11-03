@@ -1,13 +1,13 @@
 import {FC} from "react";
-
+import styles from "./VehicleTrafficEntriesFilter.module.scss";
 export interface VehicleTrafficFilterProps {
     bufferSize: number;
     onBufferSizeChange: (bufferSize: number) => void;
 }
 
 export const VehicleTrafficFilter: FC<VehicleTrafficFilterProps> = ({bufferSize, onBufferSizeChange}) => (
-    <label>
-        <span>Максимум строк</span>
+    <label className={styles.label}>
+        <span>Максимум строк :</span>
         <input 
             type = "number" 
             min = "1" 
