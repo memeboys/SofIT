@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { VehicleTrafficEntry } from "../types";
+import { DtoVehicleTrafficEntry } from "../types";
 import { useSelector } from "react-redux";
 import { RootState} from "./store";
 
 export interface VehicleTrafficEntriesState {
     bufferSize: number;
     searchText: string;
-    entries: readonly VehicleTrafficEntry[];
+    entries: readonly DtoVehicleTrafficEntry[];
 }
 
 const minBufferSize = 1;
@@ -38,7 +38,7 @@ const vehicleTrafficEntries = createSlice({
                 return { payload: Math.min(maxBufferSize, Math.max(minBufferSize, bufferSize)) };
             }
         },
-        pushVehicleEntry(state, action: PayloadAction<VehicleTrafficEntry>) {
+        pushVehicleEntry(state, action: PayloadAction<DtoVehicleTrafficEntry>) {
             return applyFilters({ ...state, entries: [...state.entries, action.payload]})
         },
         updateSearch(state, action: PayloadAction<string>) {
@@ -58,7 +58,7 @@ function applyFilters(state: VehicleTrafficEntriesState): VehicleTrafficEntriesS
     }
 }
 
-function fullTextSearch(entries: readonly VehicleTrafficEntry[], searchText: string): VehicleTrafficEntry[] {
+function fullTextSearch(entries: readonly DtoVehicleTrafficEntry[], searchText: string): DtoVehicleTrafficEntry[] {
     searchText = searchText.replaceAll(/\s+/gm, "").toUpperCase();
     if (searchText.length === 0) return entries.slice();
     return entries.filter(entry => entry.plate.toUpperCase().includes(searchText));

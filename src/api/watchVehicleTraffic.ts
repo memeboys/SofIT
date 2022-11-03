@@ -1,11 +1,11 @@
-import { VehicleTrafficEntry } from "../types";
+import { DtoVehicleTrafficEntry } from "../types";
 import { getMockVehicleTrafficEntryAsync } from "../utils/getMockVehicleTrafficEntry";
 import { DataStream, DataStreamProducer } from "./dataStream";
 
 
-export function watchVehicleTraffic(): DataStream<VehicleTrafficEntry> {
+export function watchVehicleTraffic(): DataStream<DtoVehicleTrafficEntry> {
     let isClosed = false
-    const producer = new DataStreamProducer<VehicleTrafficEntry>(() => isClosed = true);
+    const producer = new DataStreamProducer<DtoVehicleTrafficEntry>(() => isClosed = true);
     (async function() {
         while (!isClosed) {
             const entry = await getMockVehicleTrafficEntryAsync();

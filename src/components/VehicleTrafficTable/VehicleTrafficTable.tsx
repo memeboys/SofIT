@@ -1,16 +1,13 @@
 import {FC} from "react";
-import {VehicleClass, VehicleColor, VehicleTrafficEntry} from "../../types";
+import {DtoVehicleClass, DtoVehicleColor, DtoVehicleTrafficEntry} from "../../types";
 import styles from './VehicleTrafficTable.module.scss';
 
-
-
 export interface VehicleTrafficTableProps {
-    entries: readonly VehicleTrafficEntry[];
+    entries: readonly DtoVehicleTrafficEntry[];
 }
 
-export const VehicleTrafficTable: FC<VehicleTrafficTableProps> = ({ entries }) => {
-
-    return (<div className={styles.wrapper}>
+export const VehicleTrafficTable: FC<VehicleTrafficTableProps> = ({ entries }) => (
+    <div className={styles.wrapper}>
         <table className={styles.table}>
             <thead>
                 <VehicleTrafficTableHeadRow/>
@@ -19,8 +16,9 @@ export const VehicleTrafficTable: FC<VehicleTrafficTableProps> = ({ entries }) =
                 {entries.map(entry => <VehicleTrafficTableRow key={entry.deviceId} entry={entry}/>)}
             </tbody>
         </table>
-    </div>)
-}
+    </div>
+)
+
 
 const VehicleTrafficTableHeadRow: FC = () => (
     <tr className={styles.tr}>
@@ -28,15 +26,16 @@ const VehicleTrafficTableHeadRow: FC = () => (
         <td>Тип</td>
         <td>Цвет</td>
         <td>Номер</td>
-        <td>Скорость</td></tr>
+        <td>Скорость</td>
+    </tr>
 )
 
 
 interface VehicleTrafficTableRowProps {
-    entry: VehicleTrafficEntry;
+    entry: DtoVehicleTrafficEntry;
 }
 
-const vehicleClassMap: Record<VehicleClass, string> = {
+const vehicleClassMap: Record<DtoVehicleClass, string> = {
     'car': "🚗",
     'truck': "🚛",
     'bus': "🚌",
@@ -44,15 +43,15 @@ const vehicleClassMap: Record<VehicleClass, string> = {
 } as const;
 
 interface VehicleClassProps {
-    vehicleClass: VehicleClass;
+    vehicleClass: DtoVehicleClass;
 }
 
 
-const TypeCar: FC<VehicleClassProps> = ({ vehicleClass }) => (
+const VehicleClass: FC<VehicleClassProps> = ({ vehicleClass }) => (
     <span className={styles.vehicleClass}>{vehicleClassMap[vehicleClass]}</span>
 )
 
-const vehicleColorMap: Record<VehicleColor, string> = {
+const vehicleColorMap: Record<DtoVehicleColor, string> = {
     'black': '#222324',
     'white': '#f0f1f2',
     'red': '#e31919',
@@ -62,20 +61,19 @@ const vehicleColorMap: Record<VehicleColor, string> = {
     'silver': '#cadceb'
 } as const;
 
-interface ColorComponentProps {
-    color: VehicleColor;
+interface VehicleColorProps {
+    color: DtoVehicleColor;
 }
 
-const Color: FC<ColorComponentProps> = ({ color }) => (
+const VehicleColor: FC<VehicleColorProps> = ({ color }) => (
     <div className={styles.vehicleColor} style={{ backgroundColor: vehicleColorMap[color] }}/>
 )
-
 
 const VehicleTrafficTableRow: FC<VehicleTrafficTableRowProps> = ({entry}) => (
     <tr>
         <td>{new Date(entry.timestamp * 1000).toLocaleTimeString()}</td>
-        <td><TypeCar vehicleClass={entry.class}/></td>
-        <td><Color color={entry.color}/></td>
+        <td><VehicleClass vehicleClass={entry.class}/></td>
+        <td><VehicleColor color={entry.color}/></td>
         <td>{entry.plate}</td>
         <td>{entry.speed}</td>
     </tr>

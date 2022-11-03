@@ -1,14 +1,14 @@
-import {VehicleClass, VehicleColor, VehicleTrafficEntry} from "../types";
+import {DtoVehicleClass, DtoVehicleColor, DtoVehicleTrafficEntry} from "../types";
 
-const vehicleColors: readonly VehicleColor[] = [
+const vehicleColors: readonly DtoVehicleColor[] = [
     "black", "white", "red", "green", "blue", "yellow", "silver"
 ]
 
-const vehicleClasses: readonly VehicleClass[] = [
+const vehicleClasses: readonly DtoVehicleClass[] = [
     "car" , "truck" , "bus" , "motorcycle"
 ]
 
-export function getMockVehicleTrafficEntry(): VehicleTrafficEntry {
+export function getMockVehicleTrafficEntry(): DtoVehicleTrafficEntry {
     return {
         deviceId: getRandomId(),
         timestamp: Math.trunc(Date.now() / 1000),
@@ -19,7 +19,7 @@ export function getMockVehicleTrafficEntry(): VehicleTrafficEntry {
     }
 }
 
-export async function getMockVehicleTrafficEntryAsync(): Promise<VehicleTrafficEntry> {
+export async function getMockVehicleTrafficEntryAsync(): Promise<DtoVehicleTrafficEntry> {
     const delay = getRandomInt(300, 1000);
     await new Promise(resolve => setTimeout(resolve, delay));
     return getMockVehicleTrafficEntry();

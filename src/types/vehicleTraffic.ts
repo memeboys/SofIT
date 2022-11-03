@@ -1,11 +1,11 @@
-export type VehicleColor = "black"| "white"| "red"| "green"| "blue"| "yellow"| "silver";
-export type VehicleClass = "car" | "truck" | "bus" | "motorcycle";
+export type DtoVehicleColor = "black"| "white"| "red"| "green"| "blue"| "yellow"| "silver";
+export type DtoVehicleClass = "car" | "truck" | "bus" | "motorcycle";
 
-export interface VehicleTrafficEntry {
+export interface DtoVehicleTrafficEntry {
   deviceId: string;
   timestamp: number;
-  color: VehicleColor;
-  class: VehicleClass;
+  color: DtoVehicleColor;
+  class: DtoVehicleClass;
   plate: string;
   speed: number;
 }
