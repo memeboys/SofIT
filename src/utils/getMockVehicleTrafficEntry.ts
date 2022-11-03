@@ -20,7 +20,7 @@ export function getMockVehicleTrafficEntry(): VehicleTrafficEntry {
 }
 
 export async function getMockVehicleTrafficEntryAsync(): Promise<VehicleTrafficEntry> {
-    const delay = getRandomInt(1000, 3000);
+    const delay = getRandomInt(300, 1000);
     await new Promise(resolve => setTimeout(resolve, delay));
     return getMockVehicleTrafficEntry();
 }
