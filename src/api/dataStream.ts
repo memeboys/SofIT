@@ -1,23 +1,22 @@
-export type DataStreamListener<T> = (item: T) => void;
-
+export type DataListener<T> = (item: T) => void;
 export interface DataStream<T> {
-    listen(listener: DataStreamListener<T>): void;
+    onData(listener: (item: T) => void): void;
     close(): void;
 }
 
 export class DataStreamProducer<T> implements DataStream<T> {
     private isClosed = false;
-    private readonly listeners = new Set<DataStreamListener<T>>();
+    private readonly dataListeners = new Set<DataListener<T>>();
 
     constructor(readonly onClose: () => void) { }
 
     next(item: T): void {
         if (this.isClosed) return;
-        this.listeners.forEach(listener => listener(item));
+        this.dataListeners.forEach(listener => listener(item));
     }
 
-    listen(listener: DataStreamListener<T>): void {
-        this.listeners.add(listener); 
+    onData(listener: DataListener<T>): void {
+        this.dataListeners.add(listener); 
     }
 
     close(): void {

@@ -19,12 +19,6 @@ export function getMockVehicleTrafficEntry(): DtoVehicleTrafficEntry {
     }
 }
 
-export async function getMockVehicleTrafficEntryAsync(): Promise<DtoVehicleTrafficEntry> {
-    const delay = getRandomInt(300, 1000);
-    await new Promise(resolve => setTimeout(resolve, delay));
-    return getMockVehicleTrafficEntry();
-}
-
 function getRandomSpeed(): number {
     const min = 100;
     const max = 250;

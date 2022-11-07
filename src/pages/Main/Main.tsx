@@ -12,7 +12,7 @@ export const Main = () => {
 
     useEffect(() => {
         const entryStream = watchVehicleTraffic();
-        entryStream.listen(entry => dispatch(pushVehicleEntry(entry)));
+        entryStream.onData(entry => dispatch(pushVehicleEntry(entry)));
         return () => entryStream.close();
     }, [dispatch]);
 
